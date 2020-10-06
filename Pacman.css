@@ -1,0 +1,60 @@
+*
+{
+    margin: 0;
+	padding: 0;
+	list-style: none;
+	text-decoration: none;
+	border: none;
+	outline: none;
+}
+body
+{
+    background-color: black;
+}
+.row
+{
+    line-height: 0;
+}
+.ladrillo
+{
+    background-color: blue;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    display: inline-block;
+}
+.vacio
+{
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    display: inline-block;
+}
+.moneda
+{
+    background-color: white;
+    width: 5px;
+    height: 5px;
+    margin: 7.5px;
+    border-radius: 5px;
+    display: inline-block;
+}
+#pacman
+{
+    background: url('pc3.gif');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+}
+#puntaje
+{
+    text-align: center;
+    color: white;
+    border: 1px solid white;
+    width: 279px;
+    margin: 10px 0;
+    padding: 10px;
+}

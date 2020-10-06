@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <title>Pacman</title>
+    <link rel="stylesheet" href="Pacman.css">
+</head>
+<body>
+    <div id="contenedor">
+        <div id="mundo"></div>
+        <div id="pacman"></div>
+        <div id="puntaje"> 0 </div>
+    </div>
+    <script>
+        mundo = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                 [1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
+                 [1,2,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,2,1],
+                 [1,2,2,2,2,2,1,2,1,2,2,2,2,2,2,2,1,2,1,2,2,2,2,2,1],
+                 [1,2,1,1,1,1,1,2,1,2,1,1,1,1,1,2,1,2,1,1,1,1,1,2,1],
+                 [1,2,1,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,1,2,1],
+                 [1,2,1,2,1,1,1,1,1,1,1,2,1,2,1,1,1,1,1,1,1,2,1,2,1],
+                 [1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
+                 [1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1],
+                 [1,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,1],
+                 [1,2,1,1,1,2,1,2,2,1,1,2,1,2,1,1,2,2,1,2,1,1,1,2,1],
+                 [1,2,1,2,2,2,1,2,2,1,1,2,1,2,1,1,2,2,1,2,2,2,1,2,1],
+                 [1,2,1,2,1,2,1,2,2,2,2,2,1,2,2,2,2,2,1,2,1,2,1,2,1],
+                 [1,2,1,2,1,2,1,2,1,1,1,1,1,1,1,1,1,2,1,2,1,2,1,2,1],
+                 [1,2,1,2,2,2,1,2,2,2,2,2,1,2,2,2,2,2,1,2,2,2,1,2,1],
+                 [1,2,1,1,1,2,1,2,1,2,1,2,1,2,1,1,1,2,1,2,1,1,1,2,1],
+                 [1,2,2,2,2,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,2,2,2,2,1],
+                 [1,2,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,1,1,2,1],
+                 [1,2,1,1,1,2,1,2,1,1,1,2,1,2,1,2,1,2,1,2,1,1,1,2,1],
+                 [1,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,1],
+                 [1,1,1,1,1,1,1,1,1,1,1,2,2,2,1,1,1,1,1,1,1,1,1,1,1],
+                 [1,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,1],
+                 [1,2,1,1,1,2,1,1,1,1,1,2,1,2,1,1,1,1,1,2,1,1,1,2,1],
+                 [1,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,1],
+                 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]];
+
+        puntaje = 0;
+
+        pacman = 
+        {
+            x: 1,
+            y: 1
+        };
+
+        
+    
+        function crearMundo()
+        {
+            var salida = "";
+    
+            for(i = 0; i < mundo.length; i++)
+            {
+                salida += "<div class='row'>";
+                for(j = 0; j < mundo[i].length; j++)
+                {
+                    if(mundo[i][j] == 1)
+                        salida += "<div class='ladrillo'></div>";
+                    if(mundo[i][j] == 2)
+                        salida += "<div class='moneda'></div>";
+                    if(mundo[i][j] == 0)
+                        salida += "<div class='vacio'></div>";    
+                }
+                salida += "</div>"
+            }
+            //console.log(salida);
+            document.getElementById('mundo').innerHTML = salida;
+        }
+
+    function aumentoPuntaje()
+    {
+        document.getElementById("puntaje").innerHTML = puntaje;
+    }
+        document.onkeydown = function(e){
+            if(e.keyCode == 37)
+            {
+                if(mundo[pacman.x][pacman.y-1] != 1)
+                {
+                    pacman.y--;    
+                }
+            }
+            if(e.keyCode == 38)
+            {
+                if(mundo[pacman.x-1][pacman.y] != 1)
+                {
+                    pacman.x--;
+                }
+            }
+            if(e.keyCode == 39)
+            {
+                if(mundo[pacman.x][pacman.y+1] != 1)
+                {
+                    pacman.y++;
+                }
+            }
+            if(e.keyCode == 40)
+            {
+                if(mundo[pacman.x+1][pacman.y] != 1)
+                {
+                    pacman.x++;
+                }
+            }
+
+            if(mundo[pacman.x][pacman.y] == 2)
+            {
+                puntaje += 100;
+                mundo[pacman.x][pacman.y] = 0;
+                crearMundo();
+                aumentoPuntaje();
+            }
+            desplegarPacman();
+            //console.log(e.keyCode);
+        }
+        function desplegarPacman()
+        {
+            document.getElementById('pacman').style.top = pacman.x*20+"px";
+            document.getElementById('pacman').style.left = pacman.y*20+"px";
+        }
+
+
+        crearMundo();
+        desplegarPacman();
+        aumentoPuntaje();
+    </script>
+</body>
+</html>
