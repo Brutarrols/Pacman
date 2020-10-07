@@ -40,7 +40,7 @@
                  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]];
 
         puntaje = 0;
-
+        cherrypresent = false;
         pacman = 
         {
             x: 1,
@@ -63,7 +63,9 @@
                     if(mundo[i][j] == 2)
                         salida += "<div class='moneda'></div>";
                     if(mundo[i][j] == 0)
-                        salida += "<div class='vacio'></div>";    
+                        salida += "<div class='vacio'></div>";
+                    if(mundo[i][j] == 3)
+                        salida += "<div id='cherry'></div>";        
                 }
                 salida += "</div>"
             }
@@ -71,10 +73,11 @@
             document.getElementById('mundo').innerHTML = salida;
         }
 
-    function aumentoPuntaje()
-    {
-        document.getElementById("puntaje").innerHTML = puntaje;
-    }
+        function aumentoPuntaje()
+        {
+            document.getElementById("puntaje").innerHTML = puntaje;
+        }
+
         document.onkeydown = function(e){
             if(e.keyCode == 37)
             {
@@ -105,13 +108,24 @@
                 }
             }
 
-            if(mundo[pacman.x][pacman.y] == 2)
+            if(mundo[pacman.x][pacman.y] == 3)
             {
-                puntaje += 100;
+                puntaje += 50;
+                cherrypresent = false;
                 mundo[pacman.x][pacman.y] = 0;
-                crearMundo();
-                aumentoPuntaje();
             }
+            if(mundo[pacman.x][pacman.y] == 2)
+            {    
+                puntaje += 10;
+                mundo[pacman.x][pacman.y] = 0;
+            }
+            
+            crearMundo();
+            if(!cherrypresent){
+            desplegarCherry(probableCherry());
+            }
+            aumentoPuntaje();
+            
             desplegarPacman();
             //console.log(e.keyCode);
         }
@@ -119,6 +133,31 @@
         {
             document.getElementById('pacman').style.top = pacman.x*20+"px";
             document.getElementById('pacman').style.left = pacman.y*20+"px";
+        }
+        function desplegarCherry(autorizacion)
+        {
+            cherryY = Math.round(Math.random()*24);
+            cherryX = Math.round(Math.random()*24);
+
+            if(autorizacion == 1)
+            {
+                if(mundo[cherryX][cherryY] != 1)
+                {
+                    mundo[cherryX][cherryY] = 3;
+                    cherrypresent = true;
+                }
+                else
+                {
+                    cherryY = Math.round(Math.random()*25);
+                    cherryX = Math.round(Math.random()*25);
+                }
+            }
+        }
+        function probableCherry()
+        {
+            probabilidad = Math.round(Math.random()*100);
+            //console.log(probabilidad);
+            return probabilidad;
         }
 
 
