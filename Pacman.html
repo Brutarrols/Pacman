@@ -85,6 +85,7 @@
         {
             document.getElementById("puntaje").innerHTML = puntaje;
         }
+
         function cantVidas()
         {
             document.getElementById("vidas").innerHTML = " = "+vidas;
@@ -140,8 +141,11 @@
                 }
                 if(pacman.x == ghost.x && pacman.y == ghost.y)
                 {
-                    vidas -= 1;
-                    cantVidas();
+                    if(document.getElementById("ghost").style.display != "none")
+                    {
+                        vidas -= 1;
+                        cantVidas();
+                    }
                 }
                     if(!cherrypresent)
                     {
@@ -149,7 +153,8 @@
                     }
                     crearMundo();
                     desplegarPacman();
-                    desplegarFantasma()
+                    desplegarFantasma();
+                    ghostMovement();
                     aumentoPuntaje();
             }
             //console.log(e.keyCode);
@@ -187,26 +192,63 @@
 
         function desplegarFantasma()
         {
-            if(puntaje > 100)
-            {
+            //if(puntaje > 100)
+            //{
                 document.getElementById("ghost").style.display = "inline";
                 document.getElementById("ghost").style.top = ghost.x*20+"px";
                 document.getElementById("ghost").style.left = ghost.y*20+"px";
-            }
-            else
+            //}
+           /* else
             {
                 document.getElementById("ghost").style.display = "none";
-            }
-        }
-        function gameOver()
-        {
-            document.getElementsByTagName('body').innerHTML = "<div> GAME OVER </div>"
+            }*/
         }
 
+        function ghostMovement()
+        {
+            direccion = Math.round(Math.random()*2);
+            if(mundo[ghost.x-1][ghost.y] != 1 && mundo[ghost.x+1][ghost.y] != 1)
+            {
+                switch(direccion)
+                {
+                    case 1:ghost.x--; break;
+                    case 2:ghost.x++; break;
+                    default: direccion = Math.round(Math.random()*2); break;
+                }
+            }
+            if(mundo[ghost.x][ghost.y-1] != 1 && mundo[ghost.x][ghost.y+1] != 1)
+            {
+                switch(direccion)
+                {
+                    case 1:ghost.y--; break;
+                    case 2:ghost.y++; break;
+                    default: direccion = Math.round(Math.random()*2); break;
+                }
+            }
+            if(mundo[ghost.x][ghost.y-1] != 1 && mundo[ghost.x-1][ghost.y] != 1)
+            {
+                switch(direccion)
+                {
+                    case 1:ghost.x--; break;
+                    case 2:ghost.y--; break;
+                    default: direccion = Math.round(Math.random()*2); break;
+                }
+            }
+            if(mundo[ghost.x][ghost.y+1] != 1 && mundo[ghost.x+1][ghost.y] != 1)
+            {
+                switch(direccion)
+                {
+                    case 1:ghost.x++; break;
+                    case 2:ghost.y++; break;
+                    default: direccion = Math.round(Math.random()*2); break;
+                }
+            }
+        }
 
         crearMundo();
         desplegarPacman();
         desplegarFantasma();
+        ghostMovement();
         cantVidas()
         aumentoPuntaje();
     </script>
