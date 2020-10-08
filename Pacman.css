@@ -54,9 +54,10 @@ body
     text-align: center;
     color: white;
     border: 1px solid white;
-    width: 279px;
+    width: 200px;
     margin: 10px 0;
     padding: 10px;
+    display: inline-block;
 }
 #cherry
 {
@@ -66,5 +67,36 @@ body
     background-size: cover;
     width: 20px;
     height: 20px;
+    display: inline-block;
+}
+#ghost
+{
+    background: url('gost.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+}
+#tablero
+{
+    text-align: center;
+    color: white;
+    border: 1px solid white;
+    width: 200px;
+    margin: 10px 0;
+    padding: 10px;
+    display: inline-block;
+}
+#tablero img
+{
+    width: 50px;
+    height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+}
+#vidas
+{
     display: inline-block;
 }

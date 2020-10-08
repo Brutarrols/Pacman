@@ -10,11 +10,13 @@
     <div id="contenedor">
         <div id="mundo"></div>
         <div id="pacman"></div>
+        <div id="ghost"></div>
         <div id="puntaje"> 0 </div>
+        <div id="tablero"><img src="pc3.gif"><p id="vidas">=  0</p></div>
     </div>
     <script>
         mundo = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-                 [1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
+                 [1,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
                  [1,2,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,2,1,1,1,1,1,2,1],
                  [1,2,2,2,2,2,1,2,1,2,2,2,2,2,2,2,1,2,1,2,2,2,2,2,1],
                  [1,2,1,1,1,1,1,2,1,2,1,1,1,1,1,2,1,2,1,1,1,1,1,2,1],
@@ -41,14 +43,20 @@
 
         puntaje = 0;
         cherrypresent = false;
+        vidas = 3;
+
+        ghost = 
+        {
+            x: 1,
+            y: 1
+        };
+
         pacman = 
         {
             x: 1,
             y: 1
         };
 
-        
-    
         function crearMundo()
         {
             var salida = "";
@@ -77,56 +85,73 @@
         {
             document.getElementById("puntaje").innerHTML = puntaje;
         }
+        function cantVidas()
+        {
+            document.getElementById("vidas").innerHTML = " = "+vidas;
+        }
 
-        document.onkeydown = function(e){
-            if(e.keyCode == 37)
+        document.onkeydown = function(e){            
+            
+            if(vidas > 0)
             {
-                if(mundo[pacman.x][pacman.y-1] != 1)
+                if(e.keyCode == 37)
                 {
-                    pacman.y--;    
+                    if(mundo[pacman.x][pacman.y-1] != 1)
+                    {
+                        pacman.y--;
+                        document.getElementById('pacman').style.transform = 'rotate(180deg)';    
+                    }
                 }
-            }
-            if(e.keyCode == 38)
-            {
-                if(mundo[pacman.x-1][pacman.y] != 1)
+                if(e.keyCode == 38)
                 {
-                    pacman.x--;
+                    if(mundo[pacman.x-1][pacman.y] != 1)
+                    {
+                        pacman.x--;
+                        document.getElementById('pacman').style.transform = 'rotate(270deg)';
+                    }
                 }
-            }
-            if(e.keyCode == 39)
-            {
-                if(mundo[pacman.x][pacman.y+1] != 1)
+                if(e.keyCode == 39)
                 {
-                    pacman.y++;
+                    if(mundo[pacman.x][pacman.y+1] != 1)
+                    {
+                        pacman.y++;
+                        document.getElementById('pacman').style.transform = 'rotate(0deg)';
+                    }
                 }
-            }
-            if(e.keyCode == 40)
-            {
-                if(mundo[pacman.x+1][pacman.y] != 1)
+                if(e.keyCode == 40)
                 {
-                    pacman.x++;
+                    if(mundo[pacman.x+1][pacman.y] != 1)
+                    {
+                        pacman.x++;
+                        document.getElementById('pacman').style.transform = 'rotate(90deg)';
+                    }
                 }
-            }
 
-            if(mundo[pacman.x][pacman.y] == 3)
-            {
-                puntaje += 50;
-                cherrypresent = false;
-                mundo[pacman.x][pacman.y] = 0;
+                if(mundo[pacman.x][pacman.y] == 3)
+                {
+                    puntaje += 50;
+                    mundo[pacman.x][pacman.y] = 0;
+                    cherrypresent = false;
+                }
+                if(mundo[pacman.x][pacman.y] == 2)
+                {    
+                    puntaje += 10;
+                    mundo[pacman.x][pacman.y] = 0;
+                }
+                if(pacman.x == ghost.x && pacman.y == ghost.y)
+                {
+                    vidas -= 1;
+                    cantVidas();
+                }
+                    if(!cherrypresent)
+                    {
+                        desplegarCherry(probableCherry());
+                    }
+                    crearMundo();
+                    desplegarPacman();
+                    desplegarFantasma()
+                    aumentoPuntaje();
             }
-            if(mundo[pacman.x][pacman.y] == 2)
-            {    
-                puntaje += 10;
-                mundo[pacman.x][pacman.y] = 0;
-            }
-            
-            crearMundo();
-            if(!cherrypresent){
-            desplegarCherry(probableCherry());
-            }
-            aumentoPuntaje();
-            
-            desplegarPacman();
             //console.log(e.keyCode);
         }
         function desplegarPacman()
@@ -136,11 +161,11 @@
         }
         function desplegarCherry(autorizacion)
         {
-            cherryY = Math.round(Math.random()*24);
-            cherryX = Math.round(Math.random()*24);
-
-            if(autorizacion == 1)
+            if(autorizacion < 5)
             {
+                cherryY = Math.round(Math.random()*24);
+                cherryX = Math.round(Math.random()*24);
+
                 if(mundo[cherryX][cherryY] != 1)
                 {
                     mundo[cherryX][cherryY] = 3;
@@ -160,9 +185,29 @@
             return probabilidad;
         }
 
+        function desplegarFantasma()
+        {
+            if(puntaje > 100)
+            {
+                document.getElementById("ghost").style.display = "inline";
+                document.getElementById("ghost").style.top = ghost.x*20+"px";
+                document.getElementById("ghost").style.left = ghost.y*20+"px";
+            }
+            else
+            {
+                document.getElementById("ghost").style.display = "none";
+            }
+        }
+        function gameOver()
+        {
+            document.getElementsByTagName('body').innerHTML = "<div> GAME OVER </div>"
+        }
+
 
         crearMundo();
         desplegarPacman();
+        desplegarFantasma();
+        cantVidas()
         aumentoPuntaje();
     </script>
 </body>
